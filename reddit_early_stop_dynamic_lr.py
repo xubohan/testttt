@@ -41,7 +41,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'Reddit')
 dataset = Reddit(path)
 
-# Already send node features/labels to GPU for faster access during sampling:
 data = dataset[0].to(device, 'x', 'y')
 batch_size = 2048
 kwargs = {'batch_size': batch_size, 'num_workers':6, 'persistent_workers': True}
@@ -51,9 +50,7 @@ train_loader = NeighborLoader(data, input_nodes=data.train_mask,
 subgraph_loader = NeighborLoader(copy.copy(data), input_nodes=None,
                                  num_neighbors=[-1], shuffle=False, **kwargs)
 
-# No need to maintain these features during evaluation:
 del subgraph_loader.data.x, subgraph_loader.data.y
-# Add global node index information.
 subgraph_loader.data.num_nodes = data.num_nodes
 subgraph_loader.data.n_id = torch.arange(data.num_nodes)
 

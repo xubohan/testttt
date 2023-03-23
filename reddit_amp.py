@@ -102,16 +102,12 @@ def test():
 
 # def pyg_checktime():
 a = datetime.datetime.now()
-for epoch in range(1, 10):
+for epoch in range(1, 11):
     loss, acc = train(epoch)
     train_acc, val_acc, test_acc = test()
     print(f'Epoch:{epoch} Loss: {loss:.4f}, Approx. Train: {acc:.4f}')
     print(f'Epoch:{epoch} Train: {train_acc:.4f}, Val: {val_acc:.4f}, 'f'Test: {test_acc:.4f}')
 
-loss, acc = train(epoch)
-print(f'Epoch 010, Loss: {loss:.4f}, Approx. Train: {acc:.4f}')
-train_acc, val_acc, test_acc = test()
-print(f'Epoch: 010, Train: {train_acc:.4f}, Val: {val_acc:.4f}, 'f'Test: {test_acc:.4f}')
 b = datetime.datetime.now()
 print('time spend using pyg:\n compression time: ', a - c, ' train time: ', b - a, '  total time: ', b -c)
 
