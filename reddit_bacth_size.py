@@ -3,8 +3,6 @@ import os.path
 
 import torch
 import torch.nn.functional as F
-# from tqdm import tqdm
-
 from torch_geometric.datasets import Reddit
 from torch_geometric.loader import NeighborLoader
 from torch_geometric.nn import SAGEConv
@@ -17,7 +15,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'Reddit')
 dataset = Reddit(path)
 
-# Already send node features/labels to GPU for faster access during sampling:
 data = dataset[0].to(device, 'x', 'y')
 batch_size = 2048
 kwargs = {'batch_size': batch_size, 'num_workers':6, 'persistent_workers': True}

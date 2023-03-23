@@ -1,9 +1,9 @@
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import numpy as np
 
-# 提前终止参数
-patience = 5  # 在这之后的连续准确率下降时将停止训练
-min_delta = 0.001  # 只有当准确率下降超过此值时，才考虑为准确率下降
+# early stopping
+patience = 5  # after 5 times, training will be stopped
+min_delta = 0.001  # when the dif exceed this value, early stopping will consider to stop training
 
 class EarlyStopping:
     def __init__(self, patience, min_delta):
@@ -42,7 +42,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'Reddit')
 dataset = Reddit(path)
 
-# Already send node features/labels to GPU for faster access during sampling:
 data = dataset[0].to(device, 'x', 'y')
 batch_size = 4096
 kwargs = {'batch_size': batch_size, 'num_workers':24, 'persistent_workers': True}
@@ -52,9 +51,7 @@ train_loader = NeighborLoader(data, input_nodes=data.train_mask,
 subgraph_loader = NeighborLoader(copy.copy(data), input_nodes=None,
                                  num_neighbors=[-1], shuffle=False, **kwargs)
 
-# No need to maintain these features during evaluation:
 del subgraph_loader.data.x, subgraph_loader.data.y
-# Add global node index information.
 subgraph_loader.data.num_nodes = data.num_nodes
 subgraph_loader.data.n_id = torch.arange(data.num_nodes)
 

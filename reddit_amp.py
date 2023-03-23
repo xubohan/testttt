@@ -3,7 +3,6 @@ import os.path
 
 import torch
 import torch.nn.functional as F
-# from tqdm import tqdm
 from torch.cuda.amp import GradScaler
 from torch.cuda.amp import autocast
 
@@ -19,7 +18,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'Reddit')
 dataset = Reddit(path)
 
-# Already send node features/labels to GPU for faster access during sampling:
 data = dataset[0].to(device, 'x', 'y')
 batch_size = 1024
 kwargs = {'batch_size': batch_size, 'num_workers':6, 'persistent_workers': True}
@@ -29,9 +27,7 @@ train_loader = NeighborLoader(data, input_nodes=data.train_mask,
 subgraph_loader = NeighborLoader(copy.copy(data), input_nodes=None,
                                  num_neighbors=[-1], shuffle=False, **kwargs)
 
-# No need to maintain these features during evaluation:
 del subgraph_loader.data.x, subgraph_loader.data.y
-# Add global node index information.
 subgraph_loader.data.num_nodes = data.num_nodes
 subgraph_loader.data.n_id = torch.arange(data.num_nodes)
 
@@ -68,7 +64,6 @@ model = SAGE(dataset.num_features, 256, dataset.num_classes).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 scaler = GradScaler()
 
-# @torch.amp.autocast()
 def train(epoch):
     model.train()
 
@@ -143,7 +138,6 @@ Epoch 010, Loss: 0.5429, Approx. Train: 0.9333
 Epoch: 010, Train: 0.9636, Val: 0.9520, Test: 0.9510
 time spend using pyg:
  compression time:  0:00:29.442932  train time:  0:05:28.526777   total time:  0:05:57.969709
-
 '''
 
 

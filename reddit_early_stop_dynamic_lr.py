@@ -1,9 +1,9 @@
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import numpy as np
 
-# 提前终止参数
-patience = 5  # 在这之后的连续准确率下降时将停止训练
-min_delta = 0.001  # 只有当准确率下降超过此值时，才考虑为准确率下降
+# early stopping
+patience = 5  # after 5 times, training will be stopped
+min_delta = 0.001  # when the dif exceed this value, early stopping will consider to stop training
 
 class EarlyStopping:
     def __init__(self, patience, min_delta):
