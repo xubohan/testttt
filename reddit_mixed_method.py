@@ -43,8 +43,8 @@ path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', '
 dataset = Reddit(path)
 
 data = dataset[0].to(device, 'x', 'y')
-batch_size = 4096
-kwargs = {'batch_size': batch_size, 'num_workers':24, 'persistent_workers': True}
+batch_size = 1024
+kwargs = {'batch_size': batch_size, 'num_workers':6, 'persistent_workers': True}
 train_loader = NeighborLoader(data, input_nodes=data.train_mask,
                               num_neighbors=[25, 10], shuffle=True, **kwargs)
 
@@ -144,8 +144,6 @@ print('time spend using pyg:\n compression time: ', a - c, ' train time: ', b - 
 
 
 
-
-
 '''
 bs=1024 nw=12 no(dynamic lr, stop learn)
 Epoch:1 Loss: 0.9767, Approx. Train: 0.7687
@@ -171,6 +169,29 @@ Epoch: 010, Train: 0.9760, Val: 0.9642, Test: 0.9634
 time spend using pyg:
  compression time:  0:00:30.196367  train time:  0:03:34.731317   total time:  0:04:04.927684
 
+
+Epoch:1 Loss: 0.5088, Approx. Train: 0.8943
+Epoch:1 Train: 0.9520, Val: 0.9499, Test: 0.9495
+Epoch:2 Loss: 0.3887, Approx. Train: 0.9268
+Epoch:2 Train: 0.9546, Val: 0.9499, Test: 0.9507
+Epoch:3 Loss: 0.4836, Approx. Train: 0.9243
+Epoch:3 Train: 0.9549, Val: 0.9494, Test: 0.9478
+Epoch:4 Loss: 0.5260, Approx. Train: 0.9247
+Epoch:4 Train: 0.9583, Val: 0.9504, Test: 0.9503
+Epoch:5 Loss: 0.5586, Approx. Train: 0.9252
+Epoch:5 Train: 0.9585, Val: 0.9502, Test: 0.9495
+Epoch:6 Loss: 0.5717, Approx. Train: 0.9274
+Epoch:6 Train: 0.9608, Val: 0.9509, Test: 0.9521
+Epoch:7 Loss: 0.6059, Approx. Train: 0.9284
+Epoch:7 Train: 0.9606, Val: 0.9530, Test: 0.9512
+Epoch:8 Loss: 0.5537, Approx. Train: 0.9299
+Epoch:8 Train: 0.9631, Val: 0.9503, Test: 0.9513
+Epoch:9 Loss: 0.5570, Approx. Train: 0.9304
+Epoch:9 Train: 0.9625, Val: 0.9489, Test: 0.9491
+Epoch:10 Loss: 0.5591, Approx. Train: 0.9316
+Epoch:10 Train: 0.9653, Val: 0.9521, Test: 0.9518
+time spend using pyg:
+ compression time:  0:00:29.856681  train time:  0:05:36.852431   total time:  0:06:06.709112
 
 bs=2048 nw=12  dynamic lr  stop learn
 Epoch:1 Loss: 0.5617, Approx. Train: 0.8771
